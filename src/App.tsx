@@ -4,7 +4,7 @@ import axios from "axios";
 import { log } from "console";
 
 function App() {
-  const baseUrl = "http://localhost:8080";
+  const baseUrl = "http://localhost:3001";
 
   const getUserByIdApi = async (id: string) => {
     try {
@@ -17,12 +17,19 @@ function App() {
   };
 
   const signUpUserApi = async (email: string, password: string) => {
+    console.log(email, password);
     try {
-      const response = await axios.post(`${baseUrl}/signUp`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${baseUrl}/signup`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       console.log("RAW RESPONSE: ", response);
+      // don't think this is very safe
+      localStorage.setItem("accessToken", response.data.accessToken);
       return response.data;
     } catch (error) {
       console.error("Error signing up user: ", error);
@@ -31,11 +38,17 @@ function App() {
 
   const loginUserApi = async (email: string, password: string) => {
     try {
-      const response = await axios.post(`${baseUrl}/login`, {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        `${baseUrl}/login`,
+        {
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
       console.log("RAW RESPONSE: ", response);
+      // don't think this is very safe
+      localStorage.setItem("accessToken", response.data.accessToken);
       return response.data;
     } catch (error) {
       console.error("Error loging in user: ", error);
@@ -61,6 +74,9 @@ function App() {
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginUser, setLoginUser] = useState(null);
+
+  // For auth test
+  const [users, setUsers] = useState<any>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,6 +124,21 @@ function App() {
     }
 
     setLoginLoading(false);
+  };
+
+  const handleAuthTest = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    try {
+      const response = await axios.get(`${baseUrl}/users/current`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      });
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error getting auth test: ", error);
+    }
   };
 
   return (
@@ -181,6 +212,18 @@ function App() {
           <pre>{JSON.stringify(loginUser, null, 2)}</pre>
         </div>
       ) : null}
+      <div>
+        <h2>Authentication Test:</h2>
+        <form onSubmit={handleAuthTest}>
+          <button type="submit">Test Authentication</button>
+        </form>
+        {users ? (
+          <div>
+            <h2>Authenticated Users Data:</h2>
+            <pre>{JSON.stringify(users, null, 2)}</pre>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }
