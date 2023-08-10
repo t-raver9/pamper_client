@@ -27,9 +27,7 @@ function App() {
         },
         { withCredentials: true }
       );
-      console.log("RAW RESPONSE: ", response);
-      // don't think this is very safe
-      localStorage.setItem("accessToken", response.data.accessToken);
+
       return response.data;
     } catch (error) {
       console.error("Error signing up user: ", error);
@@ -46,9 +44,6 @@ function App() {
         },
         { withCredentials: true }
       );
-      console.log("RAW RESPONSE: ", response);
-      // don't think this is very safe
-      localStorage.setItem("accessToken", response.data.accessToken);
       return response.data;
     } catch (error) {
       console.error("Error loging in user: ", error);
@@ -131,14 +126,16 @@ function App() {
 
     try {
       const response = await axios.get(`${baseUrl}/users/current`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
+        withCredentials: true,
       });
       setUsers(response.data);
     } catch (error) {
       console.error("Error getting auth test: ", error);
     }
+  };
+
+  const handleGoogleLogin = async () => {
+    window.location.href = `${baseUrl}/auth/google`;
   };
 
   return (
@@ -224,6 +221,7 @@ function App() {
           </div>
         ) : null}
       </div>
+      <button onClick={handleGoogleLogin}>Sign in with google</button>
     </div>
   );
 }
