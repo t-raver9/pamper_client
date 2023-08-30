@@ -9,21 +9,9 @@ import { AuthProvider } from "./contexts/authContext";
 import { BusinessViewProvider } from "./contexts/viewContext";
 import Layout from "./components/Layout";
 import { PricingPlans } from "./pages/BusinessInfo";
-
-{
-  /* <Button color="inherit" component={Link} to="/solutions">
-            Solutions
-          </Button>
-          <Button color="inherit" component={Link} to="/features">
-            Features
-          </Button>
-          <Button color="inherit" component={Link} to="/why-pamper">
-            Why Pamper
-          </Button>
-          <Button color="inherit" component={Link} to="/pricing-plans">
-            Pricing Plans
-          </Button> */
-}
+import Solutions from "./pages/BusinessInfo/Solutions";
+import Features from "./pages/BusinessInfo/Features";
+import WhyPamper from "./pages/BusinessInfo/WhyPamper";
 
 const router = createBrowserRouter([
   {
@@ -58,22 +46,30 @@ const router = createBrowserRouter([
       </Layout>
     ),
   },
-  // {
-  //   path: "/solutions",
-  //   element: <Solutions />,
-  // },
-  // {
-  //   path: "/features",
-  //   element: <Features />,
-  // },
-  // {
-  //   path: "/why-pamper",
-  //   element: <WhyPamper />,
-  // },
-  // {
-  //   path: "/pricing-plans",
-  //   element: <PricingPlans />,
-  // },
+  {
+    path: "/solutions",
+    element: (
+      <Layout>
+        <Solutions />
+      </Layout>
+    ),
+  },
+  {
+    path: "/features",
+    element: (
+      <Layout>
+        <Features />
+      </Layout>
+    ),
+  },
+  {
+    path: "/why-pamper",
+    element: (
+      <Layout>
+        <WhyPamper />
+      </Layout>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(

@@ -100,6 +100,9 @@ const Account = () => {
       </div>
     );
   }
+
+  // Else, just return something, should never reach this state. Fix later.
+  return <div>State error</div>;
 };
 
 export default Account;
