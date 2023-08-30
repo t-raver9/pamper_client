@@ -1,6 +1,21 @@
 import React, { ReactNode, createContext, useContext, useState } from "react";
 
-type User = {};
+export type BusinessRole =
+  | "PROVIDER_ADMIN"
+  | "VENUE_ADMIN"
+  | "SOLE_TRADER"
+  | "STAFF";
+
+export type RetailRole = "CUSTOMER";
+
+export type Role = BusinessRole | RetailRole;
+
+type User = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: Role;
+};
 
 type AuthContextType = {
   user: User | null;
@@ -13,6 +28,16 @@ type AuthProviderProps = {
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const isBusinessRole = (role: Role): role is BusinessRole => {
+  return ["PROVIDER_ADMIN", "VENUE_ADMIN", "SOLE_TRADER", "STAFF"].includes(
+    role
+  );
+};
+
+export const isRetailRole = (role: Role): role is RetailRole => {
+  return ["CUSTOMER"].includes(role);
+};
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const initialUserString = localStorage.getItem("user");

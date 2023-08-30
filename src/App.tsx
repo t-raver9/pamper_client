@@ -2,13 +2,15 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import Navbar from "./components/Navbar";
-import { useAuth } from "./contexts/authContext";
+import { isBusinessRole, useAuth } from "./contexts/authContext";
+import { useBusinessView } from "./contexts/viewContext";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SERVER_URL;
 
   // User from auth context
   const { user, login } = useAuth();
+  const { setBusinessView } = useBusinessView();
 
   useEffect(() => {
     handleAuthRedirect();
@@ -21,6 +23,11 @@ function App() {
     if (authResult == "success") {
       const user = await getCurrentUser();
       login(user);
+      if (isBusinessRole(user.role)) {
+        setBusinessView(true);
+      } else {
+        setBusinessView(false);
+      }
     } else if (authResult === "failed") {
       console.log("Login failed.");
     }
@@ -40,12 +47,7 @@ function App() {
     }
   };
 
-  return (
-    <div>
-      <Navbar />
-      User: {JSON.stringify(user)}
-    </div>
-  );
+  return <div>User: {JSON.stringify(user)}</div>;
 }
 
 export default App;

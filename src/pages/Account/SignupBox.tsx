@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import GoogleLoginButton from "./GoogleButton";
-import { Role } from ".";
+import { Role, isBusinessRole } from "../../contexts/authContext";
 
 interface SignupBoxProps {
   onFormSubmit: (
     email: string,
     password: string,
     firstName: string,
-    lastName: string
+    lastName: string,
+    businessName?: string
   ) => void;
   buttonText: string;
   role: Role;
@@ -19,13 +20,10 @@ const SignupBox = ({ onFormSubmit, buttonText, role }: SignupBoxProps) => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-
-  const handleGoogleResponse = (response: any) => {
-    console.log(response);
-  };
+  const [businessName, setBusinessName] = useState("");
 
   const handleSubmit = () => {
-    onFormSubmit(email, password, firstName, lastName);
+    onFormSubmit(email, password, firstName, lastName, businessName);
   };
 
   return (
@@ -82,6 +80,19 @@ const SignupBox = ({ onFormSubmit, buttonText, role }: SignupBoxProps) => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {isBusinessRole(role) && (
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="businessName"
+              label="Business Name"
+              name="businessName"
+              value={businessName}
+              onChange={(e) => setBusinessName(e.target.value)}
+            />
+          )}
           <Button
             type="submit"
             fullWidth
@@ -92,7 +103,10 @@ const SignupBox = ({ onFormSubmit, buttonText, role }: SignupBoxProps) => {
           >
             {buttonText}
           </Button>
-          <GoogleLoginButton role={role} />
+          <GoogleLoginButton
+            existingUser={false}
+            disableButton={businessName.length == 0}
+          />
         </Paper>
       </Grid>
     </Grid>

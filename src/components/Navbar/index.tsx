@@ -1,25 +1,24 @@
 import React from "react";
-import { AppBar, Toolbar, Button, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { useBusinessView } from "../../contexts/viewContext";
+import { isBusinessRole, useAuth } from "../../contexts/authContext";
+
+import DefaultNavbar from "./DefaultNavbar";
+import BusinessNavbar from "./BusinessNavbar";
+import BusinessInfoNavbar from "./BusinessInfoNavbar";
 
 const Navbar = () => {
-  return (
-    <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            Pamper
-          </Link>
-        </Typography>
-        <Button color="inherit" component={Link} to="/account/CUSTOMER">
-          My Account
-        </Button>
-        <Button color="inherit" component={Link} to="/business">
-          For Business
-        </Button>
-      </Toolbar>
-    </AppBar>
-  );
+  const { isBusinessView } = useBusinessView();
+  const { user } = useAuth();
+
+  if (user?.role && isBusinessRole(user.role)) {
+    return <BusinessNavbar />;
+  }
+
+  if (isBusinessView) {
+    return <BusinessInfoNavbar />;
+  }
+
+  return <DefaultNavbar />;
 };
 
 export default Navbar;

@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
-import { Role } from ".";
 import { GoogleLogin } from "@react-oauth/google";
 import GoogleLoginButton from "./GoogleButton";
+import { Role } from "../../contexts/authContext";
 
 interface LoginBoxProps {
   onFormSubmit: (email: string, password: string) => void;
   buttonText: string;
-  role: Role;
 }
 
-const LoginBox: React.FC<LoginBoxProps> = ({
-  onFormSubmit,
-  buttonText,
-  role,
-}) => {
+const LoginBox: React.FC<LoginBoxProps> = ({ onFormSubmit, buttonText }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -65,7 +60,7 @@ const LoginBox: React.FC<LoginBoxProps> = ({
           >
             {buttonText}
           </Button>
-          <GoogleLoginButton role={role} />
+          <GoogleLoginButton existingUser={true} />
         </Paper>
       </Grid>
     </Grid>

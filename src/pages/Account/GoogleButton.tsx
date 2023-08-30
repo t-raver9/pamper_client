@@ -1,12 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Role } from ".";
-import axios from "axios";
+import { Role } from "../../contexts/authContext";
 
-const GoogleButton = styled.button`
+const GoogleButton = styled.button<{ disabled?: boolean }>`
   display: flex;
   align-items: center;
-  background-color: #4285f4;
+  background-color: ${(props) => (props.disabled ? "#b0b0b0" : "#4285f4")};
   color: white;
   width: 240px;
   height: 50px;
@@ -17,10 +16,10 @@ const GoogleButton = styled.button`
   font-weight: bold;
   padding: 0 15px;
   transition: background-color 0.218s, border-color 0.218s, box-shadow 0.218s;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
 
   &:hover {
-    background-color: #357abd;
+    background-color: ${(props) => (props.disabled ? "#b0b0b0" : "#357abd")};
   }
 `;
 
@@ -31,21 +30,34 @@ const GoogleIcon = styled.img`
 `;
 
 interface GoogleLoginButtonProps {
-  role: Role;
+  existingUser: boolean;
+  role?: Role;
+  businessName?: string;
+  disableButton?: boolean;
 }
 
-const GoogleLoginButton = ({ role }: GoogleLoginButtonProps) => {
+const GoogleLoginButton = ({
+  role,
+  existingUser,
+  businessName,
+  disableButton,
+}: GoogleLoginButtonProps) => {
   const handleGoogleLogin = async () => {
-    window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google?role=${role}`;
+    if (disableButton) return;
+
+    if (!existingUser) {
+      window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google/signup?role=${role}&businessName=${businessName}`;
+    }
+    window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google/login`;
   };
 
   return (
-    <GoogleButton onClick={handleGoogleLogin}>
+    <GoogleButton onClick={handleGoogleLogin} disabled={disableButton}>
       <GoogleIcon
         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
         alt="Google Logo"
       />
-      Log in with Google
+      {existingUser ? "Log in with Google" : "Sign up with Google"}
     </GoogleButton>
   );
 };
