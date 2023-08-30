@@ -18,7 +18,7 @@ const CategoryMenu = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("/categories")
+    fetch(`${process.env.REACT_APP_SERVER_URL}/categories`)
       .then((response) => response.json())
       .then((data: Category[]) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
