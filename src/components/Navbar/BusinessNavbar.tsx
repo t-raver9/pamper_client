@@ -1,21 +1,25 @@
 import React from "react";
-import { AppBar, Toolbar, Button, Typography } from "@mui/material";
+import { AppBar, Toolbar, Button, Typography, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 
 const BusinessNavbar = () => {
   return (
-    <AppBar position="static" style={{ backgroundColor: "black" }}>
+    <AppBar position="static" style={{ backgroundColor: "#c398b9" }}>
       <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            Pamper (Business View)
-          </Link>
-        </Typography>
-        <Button color="inherit" component={Link} to="/account/CUSTOMER">
+        <Box display="flex" flexGrow={1}>
+          <Button color="inherit" component={Link} to="/appointments">
+            Appointments
+          </Button>
+          <Button color="inherit" component={Link} to="/services-offered">
+            Services Offered
+          </Button>
+          <Button color="inherit" component={Link} to="/hours">
+            Business Hours
+          </Button>
+        </Box>
+
+        <Button color="inherit" component={Link} to="/account">
           My Account
-        </Button>
-        <Button color="inherit" component={Link} to="/business">
-          For Business
         </Button>
       </Toolbar>
     </AppBar>

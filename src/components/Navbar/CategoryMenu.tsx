@@ -18,7 +18,7 @@ const CategoryMenu = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_SERVER_URL}/categories`)
+    fetch("/categories")
       .then((response) => response.json())
       .then((data: Category[]) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
@@ -28,6 +28,12 @@ const CategoryMenu = () => {
     event: React.MouseEvent<HTMLButtonElement>,
     index: number
   ) => {
+    // If clicking the already open menu, it will close it
+    if (selectedIndex === index) {
+      handleClose();
+      return;
+    }
+
     setAnchorEl(event.currentTarget);
     setSelectedIndex(index);
   };
@@ -40,19 +46,12 @@ const CategoryMenu = () => {
   return (
     <div style={{ display: "flex", marginRight: "auto" }}>
       {categories.map((category, index) => (
-        <div
-          key={category.id}
-          onMouseLeave={() => {
-            console.log("LEAVE");
-            handleClose();
-          }} // This will close the dropdown when the mouse leaves the button or menu area
-        >
+        <div key={category.id}>
           <Button
             aria-controls="simple-menu"
             aria-haspopup="true"
             color="inherit"
-            onMouseOver={(event) => handleOpen(event, index)}
-            onMouseLeave={(e) => console.log("LEFT PART 2")}
+            onClick={(event) => handleOpen(event, index)}
           >
             {category.name}
           </Button>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import GoogleLoginButton from "./GoogleButton";
-import { Role } from "../../contexts/authContext";
+import { Role } from "../../api/queries";
 
 interface LoginBoxProps {
   onFormSubmit: (email: string, password: string) => void;

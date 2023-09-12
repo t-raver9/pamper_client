@@ -1,26 +1,18 @@
-import React, { ReactNode, createContext, useContext, useState } from "react";
-
-export type BusinessRole =
-  | "PROVIDER_ADMIN"
-  | "VENUE_ADMIN"
-  | "SOLE_TRADER"
-  | "STAFF";
-
-export type RetailRole = "CUSTOMER";
-
-export type Role = BusinessRole | RetailRole;
-
-type User = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: Role;
-};
+import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  BusinessRole,
+  RetailRole,
+  Role,
+  UserDTO,
+  VenueDTO,
+} from "../api/queries";
 
 type AuthContextType = {
-  user: User | null;
-  login: (user: User) => void;
+  user: UserDTO | null;
+  venue: VenueDTO | null;
+  login: (user: UserDTO, venue?: VenueDTO) => void;
   logout: () => void;
+  getFormattedRole: () => string | null;
 };
 
 type AuthProviderProps = {
@@ -43,20 +35,57 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const initialUserString = localStorage.getItem("user");
   const initialUser = initialUserString ? JSON.parse(initialUserString) : null;
 
-  const [user, setUser] = useState<User | null>(initialUser);
+  const initialVenueString = localStorage.getItem("venue");
+  const initialVenue = initialVenueString
+    ? JSON.parse(initialVenueString)
+    : null;
 
-  const login = (user: User) => {
+  const [user, setUser] = useState<UserDTO | null>(initialUser);
+  const [venue, setVenue] = useState<VenueDTO | null>(initialVenue);
+
+  const login = (user: UserDTO, venue?: VenueDTO) => {
     localStorage.setItem("user", JSON.stringify(user));
+    if (venue) {
+      localStorage.setItem("venue", JSON.stringify(venue));
+    }
     setUser(user);
+    if (venue) {
+      setVenue(venue);
+    }
   };
 
   const logout = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("venue");
     setUser(null);
+    setVenue(null);
+  };
+
+  const getFormattedRole = () => {
+    if (!user || !user.role) {
+      return null;
+    }
+
+    switch (user.role) {
+      case "PROVIDER_ADMIN":
+        return "Provider Admin";
+      case "VENUE_ADMIN":
+        return "Venue Admin";
+      case "SOLE_TRADER":
+        return "Sole Trader";
+      case "STAFF":
+        return "Staff";
+      case "CUSTOMER":
+        return "Customer";
+      default:
+        return null;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, venue, login, logout, getFormattedRole }}
+    >
       {children}
     </AuthContext.Provider>
   );

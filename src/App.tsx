@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import Navbar from "./components/Navbar";
 import { isBusinessRole, useAuth } from "./contexts/authContext";
 import { useBusinessView } from "./contexts/viewContext";
+import { getCurrentUser } from "./api/queries";
 
 function App() {
   const baseUrl = process.env.REACT_APP_SERVER_URL;
@@ -21,7 +21,9 @@ function App() {
     const authResult = urlParams.get("auth");
 
     if (authResult == "success") {
-      const user = await getCurrentUser();
+      console.log("Login successful.");
+      const { user, venue } = await getCurrentUser();
+
       login(user);
       if (isBusinessRole(user.role)) {
         setBusinessView(true);
@@ -30,20 +32,6 @@ function App() {
       }
     } else if (authResult === "failed") {
       console.log("Login failed.");
-    }
-  };
-
-  const getCurrentUser = async () => {
-    try {
-      const response = await axios.get(
-        `${baseUrl}/users/current/?role=CUSTOMER`,
-        {
-          withCredentials: true,
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error getting auth test: ", error);
     }
   };
 

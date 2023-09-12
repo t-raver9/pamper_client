@@ -1,5 +1,5 @@
 import React from "react";
-import { Role } from "../../contexts/authContext";
+import { Role } from "../../api/queries";
 import axios from "axios";
 import SignupBox from "./SignupBox";
 
@@ -18,7 +18,7 @@ const SignUp = ({ role, onSuccessfulSignup }: SignUpProps) => {
   ) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/signup`,
+        `${process.env.REACT_APP_SERVER_URL}/auth/signup`,
         { email, password, firstName, lastName, businessName, role },
         { withCredentials: true }
       );

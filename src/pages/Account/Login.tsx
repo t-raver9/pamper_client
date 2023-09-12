@@ -1,5 +1,5 @@
 import React from "react";
-import { Role } from "../../contexts/authContext";
+import { Role } from "../../api/queries";
 import axios from "axios";
 import LoginBox from "./LoginBox";
 
@@ -11,7 +11,7 @@ const Login = ({ onSuccessfulLogin }: LoginProps) => {
   const handleLogin = async (email: string, password: string) => {
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_SERVER_URL}/login`,
+        `${process.env.REACT_APP_SERVER_URL}/auth/login`,
         { email, password },
         { withCredentials: true }
       );

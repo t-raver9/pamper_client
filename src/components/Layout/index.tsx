@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
 import Navbar from "../Navbar";
+import Logo from "../Logo";
+import { Link } from "react-router-dom";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,6 +10,9 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
+      <Link to="/">
+        <Logo />
+      </Link>
       <Navbar />
       <div>{children}</div>
     </div>

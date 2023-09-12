@@ -4,7 +4,6 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Account from "./pages/Account";
-import Business from "./pages/Business";
 import { AuthProvider } from "./contexts/authContext";
 import { BusinessViewProvider } from "./contexts/viewContext";
 import Layout from "./components/Layout";
@@ -12,6 +11,10 @@ import { PricingPlans } from "./pages/BusinessInfo";
 import Solutions from "./pages/BusinessInfo/Solutions";
 import Features from "./pages/BusinessInfo/Features";
 import WhyPamper from "./pages/BusinessInfo/WhyPamper";
+import Appointments from "./pages/Business/Appointments";
+import ServicesOffered from "./pages/Business/ServicesOffered";
+import BusinessHours from "./pages/Business/BusinessHours";
+import GlobalStyles from "./GlobalStyles";
 
 const router = createBrowserRouter([
   {
@@ -70,6 +73,30 @@ const router = createBrowserRouter([
       </Layout>
     ),
   },
+  {
+    path: "/appointments",
+    element: (
+      <Layout>
+        <Appointments />
+      </Layout>
+    ),
+  },
+  {
+    path: "/services-offered",
+    element: (
+      <Layout>
+        <ServicesOffered />
+      </Layout>
+    ),
+  },
+  {
+    path: "/hours",
+    element: (
+      <Layout>
+        <BusinessHours />
+      </Layout>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(
@@ -77,6 +104,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <GlobalStyles />
     <AuthProvider>
       <BusinessViewProvider>
         <RouterProvider router={router} />

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import GoogleLoginButton from "./GoogleButton";
-import { Role, isBusinessRole } from "../../contexts/authContext";
+import { isBusinessRole } from "../../contexts/authContext";
+import { Role } from "../../api/queries";
 
 interface SignupBoxProps {
   onFormSubmit: (

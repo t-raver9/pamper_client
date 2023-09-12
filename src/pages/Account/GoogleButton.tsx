@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { Role } from "../../contexts/authContext";
+import { Role } from "../../api/queries";
 
 const GoogleButton = styled.button<{ disabled?: boolean }>`
   display: flex;

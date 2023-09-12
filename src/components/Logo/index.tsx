@@ -7,7 +7,7 @@ const LogoContainer = styled.img`
 `;
 
 const Logo = () => {
-  return <LogoContainer src="/assets/logo.png" alt="logo" />;
+  return <LogoContainer src="/assets/logoWord.png" alt="logo" />;
 };
 
 export default Logo;
