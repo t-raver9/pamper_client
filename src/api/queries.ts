@@ -33,6 +33,29 @@ export type UserVenueDTO = {
   venue?: VenueDTO;
 };
 
+export interface SubCategoryDTO {
+  id: number;
+  name: string;
+}
+
+export interface CategoryDTO {
+  id: number;
+  name: string;
+  subCategories: SubCategoryDTO[];
+}
+
+export type ServiceDTO = {
+  id: number;
+  description: string;
+  price: number;
+  duration: number;
+  venueId: string;
+  categoryId: number;
+  subCategoryId: number;
+};
+
+export type MutateServiceDTO = Omit<ServiceDTO, "id">;
+
 export const getCurrentUser = async (): Promise<UserVenueDTO> => {
   try {
     const response: AxiosResponse<UserVenueDTO, any> = await axios.get(
@@ -44,6 +67,46 @@ export const getCurrentUser = async (): Promise<UserVenueDTO> => {
     return response.data;
   } catch (error) {
     console.error("Error getting current user: ", error);
+    throw error;
+  }
+};
+
+export const getCategories = async (): Promise<CategoryDTO[]> => {
+  try {
+    const response: AxiosResponse<CategoryDTO[], any> = await axios.get(
+      `${serverUrl}/categories/`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error getting categories: ", error);
+    throw error;
+  }
+};
+
+export const createService = async (
+  mutateServiceDTO: MutateServiceDTO
+): Promise<ServiceDTO> => {
+  try {
+    // Make a POST request to create a new service
+    const response: AxiosResponse<ServiceDTO, any> = await axios.post(
+      `${serverUrl}/venues/${mutateServiceDTO.venueId}/services`,
+      mutateServiceDTO
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating service: ", error);
+    throw error;
+  }
+};
+
+export const listServices = async (venueId: string): Promise<ServiceDTO[]> => {
+  try {
+    const response: AxiosResponse<ServiceDTO[], any> = await axios.get(
+      `${serverUrl}/venues/${venueId}/services`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error listing services: ", error);
     throw error;
   }
 };

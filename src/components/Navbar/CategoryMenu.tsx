@@ -1,26 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
-
-export interface SubCategory {
-  id: number;
-  name: string;
-}
-
-export interface Category {
-  id: number;
-  name: string;
-  subCategories: SubCategory[];
-}
+import { CategoryDTO, getCategories } from "../../api/queries";
 
 const CategoryMenu = () => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("/categories")
-      .then((response) => response.json())
-      .then((data: Category[]) => setCategories(data))
+    getCategories()
+      .then((data: CategoryDTO[]) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
   }, []);
 
