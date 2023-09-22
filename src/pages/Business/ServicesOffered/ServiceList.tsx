@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Typography, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Typography,
+  List,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from "@mui/material";
 import {
   CategoryDTO,
+  deleteService,
   getCategories,
-  listServices,
   ServiceDTO,
 } from "../../../api/queries";
+import ServiceListItem from "./ServiceListItem";
 
 const ServiceListWrapper = styled.div`
   max-width: 400px;
@@ -15,11 +22,16 @@ const ServiceListWrapper = styled.div`
 `;
 
 interface ServiceListProps {
-  venueId: string; // Pass the venueId as a prop
+  venueId: string;
   services: ServiceDTO[];
+  onDeleteService: (serviceId: number) => Promise<void>;
 }
 
-const ServiceList: React.FC<ServiceListProps> = ({ venueId, services }) => {
+const ServiceList = ({
+  venueId,
+  services,
+  onDeleteService,
+}: ServiceListProps) => {
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
 
   useEffect(() => {
@@ -46,28 +58,40 @@ const ServiceList: React.FC<ServiceListProps> = ({ venueId, services }) => {
 
   return (
     <ServiceListWrapper>
-      <Typography variant="h2" gutterBottom>
-        Service List
-      </Typography>
-      <List>
-        {services.map((service) => (
-          <ListItem key={service.id}>
-            <ListItemText
-              primary={service.description}
-              secondary={`Category: ${
-                getCategoryByCategoryId(service.categoryId)?.name || "Unknown"
-              }, 
-             Subcategory: ${
-               getSubCategoryBySubCategoryId(
-                 service.categoryId,
-                 service.subCategoryId
-               )?.name || "Unknown"
-             },
-             Cost: $${service.price}, Duration: ${service.duration} mins`}
-            />
-          </ListItem>
-        ))}
-      </List>
+      <h2>Service List</h2>
+      {categories.map((category) => {
+        const servicesInCategory = services.filter(
+          (s) => s.categoryId === category.id
+        );
+
+        // Only render categories with associated services for the venue
+        if (servicesInCategory.length != 0) {
+          return (
+            <Accordion key={category.id}>
+              <AccordionSummary>
+                <Typography>{category.name}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <List>
+                  {servicesInCategory.map((service) => (
+                    <ServiceListItem
+                      key={service.id}
+                      service={service}
+                      subCategoryName={
+                        getSubCategoryBySubCategoryId(
+                          service.categoryId,
+                          service.subCategoryId
+                        )?.name
+                      }
+                      onDelete={onDeleteService}
+                    />
+                  ))}
+                </List>
+              </AccordionDetails>
+            </Accordion>
+          );
+        }
+      })}
     </ServiceListWrapper>
   );
 };

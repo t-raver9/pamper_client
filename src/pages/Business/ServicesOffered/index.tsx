@@ -3,7 +3,11 @@ import ServiceList from "./ServiceList"; // Ensure you import ServiceList
 import AddService from "./AddServiceForm";
 import { styled } from "styled-components";
 import { useAuth } from "../../../contexts/authContext";
-import { ServiceDTO, listServices } from "../../../api/queries";
+import {
+  ServiceDTO,
+  deleteService,
+  listServicesForVenue,
+} from "../../../api/queries";
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +28,7 @@ const ServicesOffered = () => {
 
   useEffect(() => {
     if (reload && venue) {
-      listServices(venue.id)
+      listServicesForVenue(venue.id)
         .then((data) => {
           setServices(data);
           setReload(false); // Reset the reload state
@@ -33,9 +37,30 @@ const ServicesOffered = () => {
     }
   }, [reload]);
 
+  const handleDeleteService = async (serviceId: number) => {
+    if (!venue) {
+      console.error("No venue found");
+      return;
+    }
+
+    try {
+      await deleteService(venue.id, serviceId);
+      // Update services if delete succeeds
+      setServices(services.filter((service) => service.id !== serviceId));
+    } catch (error) {
+      console.error("Error deleting service:", error);
+    }
+  };
+
   return (
     <Container>
-      {venue && <ServiceList venueId={venue.id} services={services} />}
+      {venue && (
+        <ServiceList
+          venueId={venue.id}
+          services={services}
+          onDeleteService={handleDeleteService}
+        />
+      )}
       <AddService onServiceCreated={handleServiceCreated} />
     </Container>
   );

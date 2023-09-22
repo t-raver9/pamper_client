@@ -7,14 +7,8 @@ const BusinessInfoNavbar = () => {
   const { setBusinessView } = useBusinessView();
 
   return (
-    <AppBar position="static" style={{ background: "purple" }}>
+    <AppBar position="static" style={{ background: "#c398b9" }}>
       <Toolbar>
-        <Typography variant="h6">
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            Pamper for Business
-          </Link>
-        </Typography>
-
         <Box display="flex" flexGrow={1}>
           <Button color="inherit" component={Link} to="/solutions">
             Solutions

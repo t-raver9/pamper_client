@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
+import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import Account from "./pages/Account";
@@ -15,13 +15,14 @@ import Appointments from "./pages/Business/Appointments";
 import ServicesOffered from "./pages/Business/ServicesOffered";
 import BusinessHours from "./pages/Business/BusinessHours";
 import GlobalStyles from "./GlobalStyles";
+import Services from "./pages/Services/";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Layout>
-        <App />
+        <Home />
       </Layout>
     ),
   },
@@ -78,6 +79,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <Appointments />
+      </Layout>
+    ),
+  },
+  {
+    path: "/services",
+    element: (
+      <Layout>
+        <Services />
       </Layout>
     ),
   },

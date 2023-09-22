@@ -10,12 +10,9 @@ const DefaultNavbar = () => {
   const { logout } = useAuth();
 
   return (
-    <AppBar position="static" style={{ backgroundColor: "green" }}>
+    <AppBar position="static" style={{ backgroundColor: "#8FBC8B" }}>
       <Toolbar>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
-          <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-            Pamper
-          </Link>
           <CategoryMenu />
         </Typography>
         <Button color="inherit" component={Link} to="/account">

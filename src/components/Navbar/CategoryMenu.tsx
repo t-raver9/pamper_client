@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { CategoryDTO, getCategories } from "../../api/queries";
+import { useNavigate } from "react-router-dom";
 
 const CategoryMenu = () => {
   const [categories, setCategories] = useState<CategoryDTO[]>([]);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const nav = useNavigate();
 
   useEffect(() => {
     getCategories()
@@ -32,6 +35,10 @@ const CategoryMenu = () => {
     setSelectedIndex(null);
   };
 
+  const handleSelect = (categoryId: number, subCategoryId: number) => {
+    nav(`/services/?categoryId=${categoryId}&subCategoryId=${subCategoryId}`);
+  };
+
   return (
     <div style={{ display: "flex", marginRight: "auto" }}>
       {categories.map((category, index) => (
@@ -51,7 +58,10 @@ const CategoryMenu = () => {
             onClose={handleClose}
           >
             {category.subCategories.map((subCategory) => (
-              <MenuItem key={subCategory.id} onClick={handleClose}>
+              <MenuItem
+                key={subCategory.id}
+                onClick={(_e) => handleSelect(category.id, subCategory.id)}
+              >
                 {subCategory.name}
               </MenuItem>
             ))}
