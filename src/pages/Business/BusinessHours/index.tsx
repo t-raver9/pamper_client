@@ -42,8 +42,8 @@ const BusinessHours = () => {
 
       return {
         weekday: stringToDay(day),
-        open: timeRange.open ? timeRange.open.format("HH:mm") : null,
-        close: timeRange.close ? timeRange.close.format("HH:mm") : null,
+        open: timeRange?.open ? timeRange.open.format("HH:mm") : null,
+        close: timeRange?.close ? timeRange.close.format("HH:mm") : null,
         closed: false,
         venueId: venue!.id,
       };
