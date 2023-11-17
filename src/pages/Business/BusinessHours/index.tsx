@@ -60,10 +60,10 @@ const BusinessHours = () => {
   ) => {
     return businessHoursDTOs.reduce((state, businessHoursDTO) => {
       state[businessHoursDTO.weekday] = {
-        open: businessHoursDTO.open
+        open: businessHoursDTO?.open
           ? dayjs(businessHoursDTO.open, "HH:mm")
           : null,
-        close: businessHoursDTO.close
+        close: businessHoursDTO?.close
           ? dayjs(businessHoursDTO.close, "HH:mm")
           : null,
       };
