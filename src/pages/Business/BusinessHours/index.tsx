@@ -75,7 +75,11 @@ const BusinessHours = () => {
     venue?.id &&
       getVenueHours(venue.id)
         .then((res) => {
-          setTimeRanges(businessHoursDTOsToTimeRangeLookup(res.businessHours));
+          res.businessHours.length
+            ? setTimeRanges(
+                businessHoursDTOsToTimeRangeLookup(res.businessHours)
+              )
+            : setTimeRanges(defaultState);
         })
         .catch((err) => console.log(err));
   }, []);
