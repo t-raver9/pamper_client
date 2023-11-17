@@ -27,13 +27,10 @@ const Services = () => {
   useEffect(() => {
     listServices(listServicesQuery)
       .then((result: PaginatedServicesDTO) => {
-        console.log("Result: ", result);
         setServicesData(result);
       })
       .catch((error) => console.log("error:", error));
   }, [categoryId, subCategoryId, servicesData?.currentPage]);
-
-  console.log("Services data: ", servicesData);
 
   return (
     <div>

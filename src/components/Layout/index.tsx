@@ -8,7 +8,6 @@ interface LayoutProps {
 }
 
 const Layout = ({ children }: LayoutProps) => {
-  console.log("LAYOUT");
   return (
     <div>
       <Link to="/">

@@ -75,6 +75,73 @@ export type ListServicesQuery = PaginationBase & {
   subCategoryId?: string | null;
 };
 
+export enum Day {
+  MONDAY = "MONDAY",
+  TUESDAY = "TUESDAY",
+  WEDNESDAY = "WEDNESDAY",
+  THURSDAY = "THURSDAY",
+  FRIDAY = "FRIDAY",
+  SATURDAY = "SATURDAY",
+  SUNDAY = "SUNDAY",
+}
+
+export const DAYS: Day[] = [
+  Day.MONDAY,
+  Day.TUESDAY,
+  Day.WEDNESDAY,
+  Day.THURSDAY,
+  Day.FRIDAY,
+  Day.SATURDAY,
+  Day.SUNDAY,
+];
+
+export const stringToDay = (day: string): Day => {
+  switch (day) {
+    case "MONDAY":
+      return Day.MONDAY;
+    case "TUESDAY":
+      return Day.TUESDAY;
+    case "WEDNESDAY":
+      return Day.WEDNESDAY;
+    case "THURSDAY":
+      return Day.THURSDAY;
+    case "FRIDAY":
+      return Day.FRIDAY;
+    case "SATURDAY":
+      return Day.SATURDAY;
+    case "SUNDAY":
+      return Day.SUNDAY;
+    default:
+      throw new Error(`Invalid day: ${day}`);
+  }
+};
+
+export const stringToDate = (date: string): Date => {
+  const [year, month, day] = date.split("-").map((s) => parseInt(s));
+  return new Date(year, month - 1, day);
+};
+
+export type BusinessHoursDTO = {
+  id?: string | null;
+  weekday: Day;
+  open: string | null;
+  close: string | null;
+  closed: boolean;
+  venueId: string;
+};
+
+export type HolidayDaysDTO = {
+  id: string;
+  date: Date;
+  name: string | null;
+  venueId: string;
+};
+
+export type VenueHoursDTO = {
+  businessHours: BusinessHoursDTO[];
+  holidayDays: HolidayDaysDTO[];
+};
+
 export const getCurrentUser = async (): Promise<UserVenueDTO> => {
   try {
     const response: AxiosResponse<UserVenueDTO, any> = await axios.get(
@@ -149,6 +216,32 @@ export const listServices = async (body: ListServicesQuery) => {
     return response.data;
   } catch (error) {
     console.error("Error listing services: ", error);
+    throw error;
+  }
+};
+
+export const getVenueHours = async (venueId: string) => {
+  try {
+    const response = await axios.get(`${serverUrl}/venues/${venueId}/hours`);
+    return response.data;
+  } catch (error) {
+    console.error("Error listing services: ", error);
+    throw error;
+  }
+};
+
+export const postVenueHours = async (
+  venueId: string,
+  venueHours: VenueHoursDTO
+) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/venues/${venueId}/hours`,
+      venueHours
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error setting venue hours: ", error);
     throw error;
   }
 };

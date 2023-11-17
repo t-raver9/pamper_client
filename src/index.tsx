@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Home from "./pages/Home";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Account from "./pages/Account";
 import { AuthProvider } from "./contexts/authContext";
@@ -114,10 +116,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <GlobalStyles />
-    <AuthProvider>
-      <BusinessViewProvider>
-        <RouterProvider router={router} />
-      </BusinessViewProvider>
-    </AuthProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <AuthProvider>
+        <BusinessViewProvider>
+          <RouterProvider router={router} />
+        </BusinessViewProvider>
+      </AuthProvider>
+    </LocalizationProvider>
   </React.StrictMode>
 );

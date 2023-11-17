@@ -10,8 +10,6 @@ const Container = styled.div`
 const BusinessInfo = () => {
   const { venue } = useAuth();
 
-  console.log(venue);
-
   return (
     <Container>
       <h2>Business Information</h2>
