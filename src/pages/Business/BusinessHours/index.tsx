@@ -110,6 +110,7 @@ const BusinessHours = () => {
       >
         Save Hours
       </Button>
+      <h2>HOLIDAY DAYS (Fill this out later)</h2>
     </div>
   );
 };

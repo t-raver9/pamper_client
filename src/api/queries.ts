@@ -75,6 +75,13 @@ export type ListServicesQuery = PaginationBase & {
   subCategoryId?: string | null;
 };
 
+export type AddressDTO = {
+  address: string;
+  lat: number;
+  long: number;
+  id?: string | null;
+};
+
 export enum Day {
   MONDAY = "MONDAY",
   TUESDAY = "TUESDAY",
@@ -242,6 +249,32 @@ export const postVenueHours = async (
     return response.data;
   } catch (error) {
     console.error("Error setting venue hours: ", error);
+    throw error;
+  }
+};
+
+export const getAddressForVenue = async (venueId: string) => {
+  try {
+    const response = await axios.get(`${serverUrl}/venues/${venueId}/address`);
+    return response.data;
+  } catch (error) {
+    console.error("Error getting venue address: ", error);
+    throw error;
+  }
+};
+
+export const postAddressForVenue = async (
+  venueId: string,
+  address: AddressDTO
+) => {
+  try {
+    const response = await axios.post(
+      `${serverUrl}/venues/${venueId}/address`,
+      address
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error setting venue address: ", error);
     throw error;
   }
 };

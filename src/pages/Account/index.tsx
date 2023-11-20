@@ -9,6 +9,9 @@ import { useBusinessView } from "../../contexts/viewContext";
 import { PricingPlans } from "../BusinessInfo";
 import BusinessInfo from "./BusinessInfo";
 import PersonalInfo from "./PersonalInfo";
+import Map from "../../components/Map";
+import AddressAutoComplete from "../../components/AddressAutoComplete";
+import LocationSelector from "./LocationSelector";
 
 const Account = () => {
   const { isBusinessView } = useBusinessView();
@@ -47,6 +50,7 @@ const Account = () => {
         <BusinessInfo />
         <PersonalInfo />
         <Button onClick={handleLogout}>Logout</Button>
+        <LocationSelector />
       </div>
     );
   }
