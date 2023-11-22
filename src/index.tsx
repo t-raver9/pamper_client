@@ -18,6 +18,7 @@ import ServicesOffered from "./pages/Business/ServicesOffered";
 import BusinessHours from "./pages/Business/BusinessHours";
 import GlobalStyles from "./GlobalStyles";
 import Services from "./pages/Services/";
+import Venues from "./pages/Venues";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,14 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <BusinessHours />
+      </Layout>
+    ),
+  },
+  {
+    path: "/venues",
+    element: (
+      <Layout>
+        <Venues />
       </Layout>
     ),
   },

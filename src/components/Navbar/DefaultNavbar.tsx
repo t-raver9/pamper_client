@@ -12,6 +12,9 @@ const DefaultNavbar = () => {
   return (
     <AppBar position="static" style={{ backgroundColor: "#8FBC8B" }}>
       <Toolbar>
+        <Button color="inherit" component={Link} to="/venues">
+          All Venues
+        </Button>
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           <CategoryMenu />
         </Typography>

@@ -26,6 +26,7 @@ export type VenueDTO = {
   id: string;
   businessName: string;
   isSoleTrader: boolean;
+  Address?: AddressDTO | null;
 };
 
 export type UserVenueDTO = {
@@ -80,6 +81,7 @@ export type AddressDTO = {
   lat: number;
   long: number;
   id?: string | null;
+  venueId?: string | null;
 };
 
 export enum Day {
@@ -275,6 +277,25 @@ export const postAddressForVenue = async (
     return response.data;
   } catch (error) {
     console.error("Error setting venue address: ", error);
+    throw error;
+  }
+};
+
+type Bounds = {
+  north: number;
+  south: number;
+  east: number;
+  west: number;
+};
+
+export const listVenuesInBounds = async (bounds: Bounds) => {
+  try {
+    const response = await axios.get(`${serverUrl}/venues/in-bounds`, {
+      params: bounds,
+    });
+    return response.data as VenueDTO[];
+  } catch (error) {
+    console.error("Error listing venues: ", error);
     throw error;
   }
 };
